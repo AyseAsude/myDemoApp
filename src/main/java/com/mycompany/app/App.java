@@ -1,6 +1,15 @@
 package com.mycompany.app;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.post;
+
+import spark.ModelAndView;
+import spark.template.mustache.MustacheTemplateEngine;
 
 
 public class App extends Exception {
@@ -29,7 +38,54 @@ public class App extends Exception {
         list2.add(8);
 
         System.out.println(findSum(list1,list2,2,1));
-    }
+        port(getHerokuAssignedPort());
+
+      get("/", (req, res) -> "Hello, World");
+
+      post("/compute", (req, res) -> {
+        //System.out.println(req.queryParams("input1"));
+        //System.out.println(req.queryParams("input2"));
+
+        String input1 = req.queryParams("input1");
+        java.util.Scanner sc1 = new java.util.Scanner(input1);
+        sc1.useDelimiter("[;\r\n]+");
+        java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+        while (sc1.hasNext())
+        {
+          int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
+          inputList.add(value);
+        }
+        System.out.println(inputList);
+
+
+        String input2 = req.queryParams("input2").replaceAll("\\s","");
+        int input2AsInt = Integer.parseInt(input2);
+
+        int result = App.findSum(list1, list2,1,3);
+
+       Map map = new HashMap();
+        map.put("result", result);
+        return new ModelAndView(map, "compute.mustache");
+      }, new MustacheTemplateEngine());
+
+
+      get("/compute",
+          (rq, rs) -> {
+            Map map = new HashMap();
+            map.put("result", "not computed yet!");
+            return new ModelAndView(map, "compute.mustache");
+          },
+          new MustacheTemplateEngine());
+  }
+
+  static int getHerokuAssignedPort() {
+      ProcessBuilder processBuilder = new ProcessBuilder();
+      if (processBuilder.environment().get("PORT") != null) {
+          return Integer.parseInt(processBuilder.environment().get("PORT"));
+      }
+      return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+   }
+
 
     public static int findSum(ArrayList<Integer> list1, ArrayList<Integer> list2, int smallestk1, int smallestk2) throws IllegalArgumentException{
        if(list1 == null || list2 == null){

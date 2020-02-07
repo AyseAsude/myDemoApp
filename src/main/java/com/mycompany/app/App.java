@@ -40,9 +40,9 @@ public class App extends Exception {
         System.out.println(findSum(list1,list2,2,1));
         port(getHerokuAssignedPort());
 
-      get("/", (req, res) -> "Hello, World");
+        get("/", (req, res) -> "Hello, World");
 
-      post("/compute", (req, res) -> {
+        post("/compute", (req, res) -> {
         //System.out.println(req.queryParams("input1"));
         //System.out.println(req.queryParams("input2"));
 
@@ -58,18 +58,30 @@ public class App extends Exception {
         System.out.println(inputList);
 
 
-        String input2 = req.queryParams("input2").replaceAll("\\s","");
-        int input2AsInt = Integer.parseInt(input2);
+        String input2 = req.queryParams("input2");
+        java.util.Scanner sc2 = new java.util.Scanner(input2);
+        sc2.useDelimiter("[;\r\n]+");
+        java.util.ArrayList<Integer> inputList2 = new java.util.ArrayList<>();
+        while (sc2.hasNext())
+        {
+          int value = Integer.parseInt(sc2.next().replaceAll("\\s",""));
+          inputList2.add(value);
+        }
+        System.out.println(inputList2);
 
-        int result = App.findSum(list1, list2,1,3);
+        String input3 = req.queryParams("input3").replaceAll("\\s","");
+        int input3AsInt = Integer.parseInt(input3);
+        String input4 = req.queryParams("input4").replaceAll("\\s","");
+        int input4AsInt = Integer.parseInt(input4);
+        int result = App.findSum(inputList, inputList2,input3AsInt,input4AsInt);
 
-       Map map = new HashMap();
+        Map map = new HashMap();
         map.put("result", result);
         return new ModelAndView(map, "compute.mustache");
-      }, new MustacheTemplateEngine());
+        }, new MustacheTemplateEngine());
 
 
-      get("/compute",
+       get("/compute",
           (rq, rs) -> {
             Map map = new HashMap();
             map.put("result", "not computed yet!");

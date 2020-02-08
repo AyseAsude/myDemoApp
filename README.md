@@ -1,4 +1,4 @@
-This project helps to find the sum of elements which are indexed at the arraylists
+This project helps to find the sum of elements which are indexed at the arraylists with
 given indeces.
 First parameter is an arraylist that contains Integer objects.
 Second parameter is an arraylist that contains Integer objects.

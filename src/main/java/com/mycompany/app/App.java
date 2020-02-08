@@ -25,7 +25,7 @@ public class App extends Exception {
         return list1.get(smallestk1-1) + list2.get(smallestk2-1);
     }
 
-      public static void main(String[] args) {
+      public static void main(String[] args) throws NumberFormatException {
         port(getHerokuAssignedPort());
 
         get("/", (req, res) -> "Hello, World");
@@ -42,6 +42,7 @@ public class App extends Exception {
         {
           int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
           inputList.add(value);
+
         }
         System.out.println(inputList);
 

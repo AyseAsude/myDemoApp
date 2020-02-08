@@ -50,20 +50,29 @@ public class AppTest extends TestCase {
         }
     }
 
-
-    public void testKeys(){
+    public void testKeyisLarger(){
       ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(2,4,7,1,3,43,23,12,6));
       ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(23,5,10,29,7,4,0,11,9));
 
       try{
-        App.findSum(list1,list2,0,6);
         App.findSum(list1,list2,1,60);
-
         fail("Missing Exception");
       }catch(IllegalArgumentException e){
          //success
       }
     }
+    public void testKeyisSmaller(){
+      ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(2,4,7,1,3,43,23,12,6));
+      ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(23,5,10,29,7,4,0,11,9));
+
+      try{
+        App.findSum(list1,list2,0,6);
+        fail("Missing Exception");
+      }catch(IllegalArgumentException e){
+         //success
+      }
+    }
+
 
 
 
